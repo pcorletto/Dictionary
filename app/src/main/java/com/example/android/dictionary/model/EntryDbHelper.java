@@ -74,7 +74,11 @@ public class EntryDbHelper extends SQLiteOpenHelper {
         // by the word. It worked!!!
 
         cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
-                " ORDER BY " + EntryListDB.NewEntryItem.WORD + " ASC", null);
+                " ORDER BY " + EntryListDB.NewEntryItem.WORD + " COLLATE NOCASE ASC", null);
+
+        // Another valid way to sort it, case insensitive, in SQL is as follows:
+        // cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
+        //        " ORDER BY LOWER(" + EntryListDB.NewEntryItem.WORD + ") ASC", null);
 
         return cursor;
 
