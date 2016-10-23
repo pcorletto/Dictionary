@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dictionary</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="no_entry_items_prompt">No dictionary entries to display ...</string>
+    <string name="sample_string">sample_string</string>
+    <string name="title_activity_store">StoreActivity</string>
+    <string name="title_activity_display">DisplayActivity</string>
+    <string name="ROW_NUMBER">ROW_NUMBER</string>
+    <string name="ENTRY_LIST">ENTRY_LIST</string>
+    <string name="PREF_FILE">PREF_FILE</string>
+    <string name="ENTRY_ID">ENTRY_ID</string>
+    <string name="ENTRIES_ARRAY">ENTRIES_ARRAY</string>
+    <string name="DEFINITION">DEFINITION</string>
+
+</resources>

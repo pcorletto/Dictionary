@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             tools:context=".MainActivity"
+             tools:ignore="MergeRootFrame">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/ic_dictionary"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="STORE ENTRY"
+        android:id="@+id/storeEntryButton"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DISPLAY ENTRIES"
+        android:id="@+id/displayEntriesButton"/>
+
+
+</LinearLayout>
