@@ -12,7 +12,7 @@
         android:id="@+id/word_list"></FrameLayout>
 
     <FrameLayout
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
         android:id="@+id/container"></FrameLayout>
 

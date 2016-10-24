@@ -13,6 +13,7 @@
     <string name="PREF_FILE">PREF_FILE</string>
     <string name="ENTRY_ID">ENTRY_ID</string>
     <string name="ENTRIES_ARRAY">ENTRIES_ARRAY</string>
+    <string name="WORD">WORD</string>
     <string name="DEFINITION">DEFINITION</string>
 
 </resources>

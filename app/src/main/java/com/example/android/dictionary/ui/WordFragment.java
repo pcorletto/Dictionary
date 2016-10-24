@@ -70,6 +70,7 @@ public class WordFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 EntryItem listItem = list.get(position);
+                String word = listItem.getWord();
                 String definition = listItem.getDefinition();
 
                 // Send the definition string from the word fragment
@@ -77,6 +78,7 @@ public class WordFragment extends Fragment {
 
                 DefinitionFragment frag = new DefinitionFragment();
                 Bundle args = new Bundle();
+                args.putString(getString(R.string.WORD), word);
                 args.putString(getString(R.string.DEFINITION), definition);
                 frag.setArguments(args);
 

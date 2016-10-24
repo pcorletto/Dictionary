@@ -113,29 +113,23 @@ public class EntryDbHelper extends SQLiteOpenHelper {
     }
 
 
+    public void updateDefinition(String word, String definition, SQLiteDatabase sqLiteDatabase){
 
-
-    // THE SAMPLE CODE BELOW IS IF WE NEED TO UPDATE INFORMATION FROM ANY OF OUR
-    // DB FIELDS. IN THIS EXAMPLE, I UPDATED THE SUBTOTAL. ADAPT IT THE NEEDS OF THE APP
-    //public int updateSubtotal(String product_name, String quantity, String subtotal, SQLiteDatabase sqLiteDatabase){
-
-        //ContentValues contentValues = new ContentValues();
-        // THE NEXT FOLLOWING TWO FIELDS, QUANTITY AND SUBTOTAL NEED TO BE “PUT”. THESE
-        // ARE THE ONES THAT I AM UPDATING IN THE DB
-        //contentValues.put(ShoppingList.NewShoppingItem.QUANTITY, quantity);
-        //contentValues.put(ShoppingList.NewShoppingItem.SUBTOTAL, subtotal);
+        ContentValues contentValues = new ContentValues();
+        // THE NEXT FIELD, "DEFINITION", NEEDS TO BE “PUT”. THIS
+        //  IS THE ONE THAT I AM UPDATING IN THE DB
+        contentValues.put(EntryListDB.NewEntryItem.DEFINITION, definition);
 
         // Provide a condition or selection
 
-        //String selection = EntryListDB.NewEntryItem.WORD + " LIKE ?";
+        String selection = EntryListDB.NewEntryItem.WORD + " LIKE ?";
 
-        //String[] selection_args = {entry_id};
+        String[] selection_args = {word};
 
-        //int count = sqLiteDatabase.update(ShoppingList.NewShoppingItem.TABLE_NAME, contentValues,
-          //      selection, selection_args);
+        sqLiteDatabase.update(EntryListDB.NewEntryItem.TABLE_NAME, contentValues,
+                selection, selection_args);
 
-        //return count;
-    //}
+    }
 
 
     @Override
