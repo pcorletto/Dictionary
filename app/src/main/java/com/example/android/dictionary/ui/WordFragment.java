@@ -70,6 +70,7 @@ public class WordFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 EntryItem listItem = list.get(position);
+                int entryID = listItem.getEntryID();
                 String word = listItem.getWord();
                 String definition = listItem.getDefinition();
 
@@ -78,6 +79,7 @@ public class WordFragment extends Fragment {
 
                 DefinitionFragment frag = new DefinitionFragment();
                 Bundle args = new Bundle();
+                args.putInt(getString(R.string.ENTRY_ID), entryID);
                 args.putString(getString(R.string.WORD), word);
                 args.putString(getString(R.string.DEFINITION), definition);
                 frag.setArguments(args);

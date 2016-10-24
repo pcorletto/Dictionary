@@ -98,7 +98,7 @@ public class EntryDbHelper extends SQLiteOpenHelper {
 
 
 
-    public void deleteEntryItem(String entry_id, SQLiteDatabase sqLiteDatabase){
+    public void deleteEntryItem(int entry_id, SQLiteDatabase sqLiteDatabase){
 
         String selection = EntryListDB.NewEntryItem.ENTRY_ID + " LIKE ?";
 
@@ -106,7 +106,7 @@ public class EntryDbHelper extends SQLiteOpenHelper {
 // selecting the item to be deleted from the DB. This
 // will ensure that we will only delete the selected item(s) and not anything else.
 
-        String[] selection_args = {entry_id};
+        String[] selection_args = {entry_id+""};
 
         sqLiteDatabase.delete(EntryListDB.NewEntryItem.TABLE_NAME, selection, selection_args);
 

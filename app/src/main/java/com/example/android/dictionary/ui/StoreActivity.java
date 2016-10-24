@@ -56,6 +56,7 @@ public class StoreActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 addItem(v);
+                finish();
             }
         });
 

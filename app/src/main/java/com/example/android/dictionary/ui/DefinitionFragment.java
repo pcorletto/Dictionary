@@ -21,7 +21,8 @@ public class DefinitionFragment extends Fragment {
 
     TextView word_textView;
     EditText definition_editText;
-    Button updateDefinitionButton;
+    Button updateDefinitionButton, deleteEntryButton;
+    private int mEntryID;
     private String mWord, mDefinition, new_definition;
 
     //private Context mContext;
@@ -42,6 +43,10 @@ public class DefinitionFragment extends Fragment {
         word_textView = (TextView) view.findViewById(R.id.word_textView);
         definition_editText = (EditText) view.findViewById(R.id.definition_editText);
         updateDefinitionButton = (Button) view.findViewById(R.id.updateDefinitionButton);
+        deleteEntryButton = (Button) view.findViewById(R.id.deleteEntryButton);
+
+        mEntryID = getArguments().getInt(
+                getString(R.string.ENTRY_ID));
 
         mWord = getArguments().getString(
                 getString(R.string.WORD));
@@ -66,6 +71,17 @@ public class DefinitionFragment extends Fragment {
             }
         });
 
+        deleteEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                deleteEntryItem(mEntryID);
+
+                getActivity().finish();
+
+            }
+        });
+
         return view;
     }
 
@@ -75,6 +91,15 @@ public class DefinitionFragment extends Fragment {
         sqLiteDatabase = entryDbHelper.getWritableDatabase();
 
         entryDbHelper.updateDefinition(word, definition, sqLiteDatabase);
+
+    }
+
+    public void deleteEntryItem(int entryID){
+
+        entryDbHelper = new EntryDbHelper(getContext().getApplicationContext());
+        sqLiteDatabase = entryDbHelper.getWritableDatabase();
+
+        entryDbHelper.deleteEntryItem(entryID, sqLiteDatabase);
 
     }
 
