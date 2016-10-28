@@ -13,12 +13,12 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.android.dictionary.R;
 import com.example.android.dictionary.model.EntryDbHelper;
 import com.example.android.dictionary.model.EntryItem;
 import com.example.android.dictionary.model.EntryItemAdapter;
+import com.example.android.dictionary.model.Wordlist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +38,16 @@ public class WordFragment extends Fragment {
     // Need a newList, for when entries are deleted, a new list is created
     private List<EntryItem> newList = new ArrayList<>();
 
+
+    private EntryItem mEntryItem;
     private EntryItemAdapter mAdapter;
+    Cursor cursor;
+    private Wordlist mWordlist = new Wordlist();
     EntryDbHelper entryDbHelper;
     SQLiteDatabase sqLiteDatabase;
     private int mRowNumber;
+
+    private String searchItem;
 
     public WordFragment(){
 
@@ -103,7 +109,75 @@ public class WordFragment extends Fragment {
         searchWordImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "You clicked me!", Toast.LENGTH_LONG).show();
+
+                EntryItemAdapter mAdapter = (EntryItemAdapter) listview.getAdapter();
+                mAdapter.clear();
+                mAdapter.notifyDataSetChanged();
+
+                searchItem = searchWordEditText.getText().toString().toLowerCase();
+
+                // Initialize entry item
+
+                mEntryItem = new EntryItem();
+
+                //Initialize EntryDbHelper and SQLiteDB
+
+                entryDbHelper = new EntryDbHelper(getActivity().getApplicationContext());
+                sqLiteDatabase = entryDbHelper.getReadableDatabase();
+
+                cursor = entryDbHelper.searchEntryItems(searchItem, sqLiteDatabase);
+
+                // Initialize the Row Number
+
+                mRowNumber = 0;
+
+                if(cursor.moveToFirst()){
+
+                    do{
+
+                        int entry_ID;
+                        String word, definition;
+
+                        // These corresponds to the columns in the videoDbHelper: video_ID (column 0),
+                        // rank (col. 1), title (col. 2), author (col. 3), and year (col. 4)
+
+                        // See below:
+
+                /*
+                private static final String CREATE_QUERY = "CREATE TABLE " + VideoListDB.NewVideoItem.TABLE_NAME +
+                "(" + VideoListDB.NewVideoItem.VIDEO_ID + " TEXT," +
+                VideoListDB.NewVideoItem.RANK + " INTEGER," +
+                VideoListDB.NewVideoItem.TITLE + " TEXT," +
+                VideoListDB.NewVideoItem.AUTHOR + " TEXT," +
+                VideoListDB.NewVideoItem.YEAR + " INTEGER);"; */
+
+                        entry_ID = cursor.getInt(0);
+                        word = cursor.getString(1);
+                        definition = cursor.getString(2);
+
+
+                        mEntryItem = new EntryItem(entry_ID, word, definition);
+
+                        mWordlist.addEntryItem(mEntryItem, mRowNumber);
+
+                        mRowNumber++;
+
+                    }
+
+                    while(cursor.moveToNext());
+
+                }
+
+                for(int i=0; i<mRowNumber; i++){
+
+                    list.add(mWordlist.getEntryItem(i));
+
+                }
+
+                mAdapter = new EntryItemAdapter(getContext(), list);
+
+                listview.setAdapter(mAdapter);
+
             }
         });
 
@@ -129,7 +203,7 @@ public class WordFragment extends Fragment {
         entryDbHelper = new EntryDbHelper(getContext());
         sqLiteDatabase = entryDbHelper.getReadableDatabase();
 
-        Cursor cursor = entryDbHelper.getEntryItem(sqLiteDatabase);
+        Cursor cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
 
         mRowNumber = 0;
 

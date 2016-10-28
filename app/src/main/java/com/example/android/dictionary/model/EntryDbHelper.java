@@ -61,38 +61,48 @@ public class EntryDbHelper extends SQLiteOpenHelper {
         Cursor cursor;
 
         // Create projections, or the needed column names
-        //String[] projections = {EntryListDB.NewEntryItem.ENTRY_ID,
-               // EntryListDB.NewEntryItem.WORD,
-               // EntryListDB.NewEntryItem.DEFINITION};
+        String[] projections = {EntryListDB.NewEntryItem.ENTRY_ID,
+                EntryListDB.NewEntryItem.WORD,
+                EntryListDB.NewEntryItem.DEFINITION};
 
         // We only need the table name and projection parameters. No conditions will be specified,
         // so, we will pass in null for the last five parameters.
 
-        //cursor = db.query(EntryListDB.NewEntryItem.TABLE_NAME, projections, null, null, null, null, null);
-
-        // Modified this method so that the results are sorted in alphabetical ascending order,
-        // by the word. It worked!!!
-
-        cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
-                " ORDER BY " + EntryListDB.NewEntryItem.WORD + " COLLATE NOCASE ASC", null);
-
-        // Another valid way to sort it, case insensitive, in SQL is as follows:
-        // cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
-        //        " ORDER BY LOWER(" + EntryListDB.NewEntryItem.WORD + ") ASC", null);
+        cursor = db.query(EntryListDB.NewEntryItem.TABLE_NAME, projections, null, null, null, null, null);
 
         return cursor;
 
+    }
+
+    public Cursor searchEntryItems(String searchItem, SQLiteDatabase db){
+
+        // The return type of Object is "Cursor"
+        Cursor cursor;
+
+        //cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
+          //      " WHERE " + EntryListDB.NewEntryItem.WORD + " LIKE? " + searchItem, null);
+
+        cursor = db.rawQuery("SELECT * FROM " +
+                EntryListDB.NewEntryItem.TABLE_NAME + " where " +EntryListDB.NewEntryItem.WORD+ " like '"+searchItem+"%'" , null);
+
+        return cursor;
     }
 
     public Cursor sortEntryItems(SQLiteDatabase db){
 
         Cursor cursor;
 
+        // Modified this method so that the results are sorted in alphabetical ascending order,
+        // by the word. It worked!!!
+
         cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
-                        " ORDER BY " + EntryListDB.NewEntryItem.WORD + " ASC", null);
+            " ORDER BY " + EntryListDB.NewEntryItem.WORD + " COLLATE NOCASE ASC", null);
+
+        // Another valid way to sort it, case insensitive, in SQL is as follows:
+        // cursor = db.rawQuery("SELECT * FROM " + EntryListDB.NewEntryItem.TABLE_NAME +
+        //        " ORDER BY LOWER(" + EntryListDB.NewEntryItem.WORD + ") ASC", null);
 
         return cursor;
-
 
     }
 

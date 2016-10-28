@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         entryDbHelper = new EntryDbHelper(getApplicationContext());
         sqLiteDatabase = entryDbHelper.getReadableDatabase();
 
-        cursor = entryDbHelper.getEntryItem(sqLiteDatabase);
+        cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
 
         // Initialize the Row Number
 
@@ -113,7 +113,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
 
                 Intent intent = new Intent(MainActivity.this, DisplayActivity.class);
 

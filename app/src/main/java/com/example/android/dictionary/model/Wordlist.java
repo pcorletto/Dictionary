@@ -18,12 +18,20 @@ public class Wordlist {
 
     }
 
-    public String getEntryItem(int i){
-        return mEntryItem[i].getWord() +
-                " " + mEntryItem[i].getDefinition()+ "\n\n";
+    public EntryItem getEntryItem(int i){
+       return mEntryItem[i];
     }
 
+    public String getEntryItemWord(int i){
+        return mEntryItem[i].getWord();
+    }
 
+    public String getEntryItemDefinition(int i){
+        return mEntryItem[i].getDefinition();
+    }
 
+    public String getEntryItemWordAndDefinition(int i){
+        return mEntryItem[i].getWord() + "\n\n" + mEntryItem[i].getDefinition();
+    }
 
 }
