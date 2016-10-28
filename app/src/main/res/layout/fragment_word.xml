@@ -5,8 +5,30 @@
               android:layout_height="wrap_content">
 
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchWordEditText"
+            />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/searchWordImageButton"
+            android:src="@drawable/ic_search"
+            android:background="@android:color/holo_orange_light"
+            android:scaleType="centerCrop"/>
+    </LinearLayout>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_view"/>
+
 </LinearLayout>

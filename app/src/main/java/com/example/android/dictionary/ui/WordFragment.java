@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.dictionary.R;
 import com.example.android.dictionary.model.EntryDbHelper;
@@ -26,6 +29,8 @@ import java.util.List;
  */
 public class WordFragment extends Fragment {
 
+    private EditText searchWordEditText;
+    private ImageButton searchWordImageButton;
     private ListView listview;
     private EntryItem[] mEntryItems;
     private List<EntryItem> list = new ArrayList<>();
@@ -47,6 +52,10 @@ public class WordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_word, container, false);
+
+        searchWordEditText = (EditText) view.findViewById(R.id.searchWordEditText);
+
+        searchWordImageButton = (ImageButton) view.findViewById(R.id.searchWordImageButton);
 
         listview = (ListView) view.findViewById(R.id.list_view);
 
@@ -88,6 +97,13 @@ public class WordFragment extends Fragment {
 
                 getFragmentManager().beginTransaction().replace(R.id.container, frag).commit();
 
+            }
+        });
+
+        searchWordImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "You clicked me!", Toast.LENGTH_LONG).show();
             }
         });
 
