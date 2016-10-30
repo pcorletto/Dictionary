@@ -18,9 +18,12 @@ public class DisplayActivity extends ActionBarActivity {
 
         Parcelable[] parcelables = intent.getParcelableArrayExtra(getString(R.string.ENTRY_LIST));
 
+        int mRowNumber = intent.getIntExtra(getString(R.string.ROW_NUMBER),0);
+
         Bundle bundle = new Bundle();
 
         bundle.putParcelableArray(getString(R.string.ENTRIES_ARRAY), parcelables);
+        bundle.putInt(getString(R.string.ROW_NUMBER),mRowNumber);
 
         WordFragment wordFragment = new WordFragment();
         wordFragment.setArguments(bundle);

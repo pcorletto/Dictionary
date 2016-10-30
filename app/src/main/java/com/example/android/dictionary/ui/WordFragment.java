@@ -1,7 +1,5 @@
 package com.example.android.dictionary.ui;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -15,9 +13,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.android.dictionary.R;
-import com.example.android.dictionary.model.EntryDbHelper;
 import com.example.android.dictionary.model.EntryItem;
 import com.example.android.dictionary.model.EntryItemAdapter;
+import com.example.android.dictionary.model.ReloadListFromDB;
 import com.example.android.dictionary.model.Wordlist;
 
 import java.util.ArrayList;
@@ -34,20 +32,20 @@ public class WordFragment extends Fragment {
     private ListView listview;
     private EntryItem[] mEntryItems;
     private List<EntryItem> list = new ArrayList<>();
+    private EntryItemAdapter mAdapter;
+    private int mRowNumber;
+    private String searchItem;
 
     // Need a newList, for when entries are deleted, a new list is created
     private List<EntryItem> newList = new ArrayList<>();
 
 
-    private EntryItem mEntryItem;
-    private EntryItemAdapter mAdapter;
-    Cursor cursor;
     private Wordlist mWordlist = new Wordlist();
-    EntryDbHelper entryDbHelper;
-    SQLiteDatabase sqLiteDatabase;
-    private int mRowNumber;
 
-    private String searchItem;
+    ReloadListFromDB reloadedList = new ReloadListFromDB();
+
+
+
 
     public WordFragment(){
 
@@ -68,7 +66,10 @@ public class WordFragment extends Fragment {
         Bundle bundle = this.getArguments();
         Parcelable[] parcelables = bundle.getParcelableArray(getString(R.string.ENTRIES_ARRAY));
 
+        mRowNumber = bundle.getInt(getString(R.string.ROW_NUMBER));
+
         mEntryItems = Arrays.copyOf(parcelables, mRowNumber, EntryItem[].class);
+
 
         for(int i=0; i<mRowNumber; i++){
 
@@ -110,65 +111,21 @@ public class WordFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                // Clear any previous lists by clearing the adapter.
+
                 EntryItemAdapter mAdapter = (EntryItemAdapter) listview.getAdapter();
                 mAdapter.clear();
                 mAdapter.notifyDataSetChanged();
 
                 searchItem = searchWordEditText.getText().toString().toLowerCase();
 
-                // Initialize entry item
+                // Reload the list from the SQLite Database.
 
-                mEntryItem = new EntryItem();
+                mWordlist = reloadedList.reloadListFromDB("search", searchItem, getContext());
 
-                //Initialize EntryDbHelper and SQLiteDB
+                int count = reloadedList.getListSize();
 
-                entryDbHelper = new EntryDbHelper(getActivity().getApplicationContext());
-                sqLiteDatabase = entryDbHelper.getReadableDatabase();
-
-                cursor = entryDbHelper.searchEntryItems(searchItem, sqLiteDatabase);
-
-                // Initialize the Row Number
-
-                mRowNumber = 0;
-
-                if(cursor.moveToFirst()){
-
-                    do{
-
-                        int entry_ID;
-                        String word, definition;
-
-                        // These corresponds to the columns in the videoDbHelper: video_ID (column 0),
-                        // rank (col. 1), title (col. 2), author (col. 3), and year (col. 4)
-
-                        // See below:
-
-                /*
-                private static final String CREATE_QUERY = "CREATE TABLE " + VideoListDB.NewVideoItem.TABLE_NAME +
-                "(" + VideoListDB.NewVideoItem.VIDEO_ID + " TEXT," +
-                VideoListDB.NewVideoItem.RANK + " INTEGER," +
-                VideoListDB.NewVideoItem.TITLE + " TEXT," +
-                VideoListDB.NewVideoItem.AUTHOR + " TEXT," +
-                VideoListDB.NewVideoItem.YEAR + " INTEGER);"; */
-
-                        entry_ID = cursor.getInt(0);
-                        word = cursor.getString(1);
-                        definition = cursor.getString(2);
-
-
-                        mEntryItem = new EntryItem(entry_ID, word, definition);
-
-                        mWordlist.addEntryItem(mEntryItem, mRowNumber);
-
-                        mRowNumber++;
-
-                    }
-
-                    while(cursor.moveToNext());
-
-                }
-
-                for(int i=0; i<mRowNumber; i++){
+                for(int i=0; i<count; i++){
 
                     list.add(mWordlist.getEntryItem(i));
 
@@ -178,6 +135,7 @@ public class WordFragment extends Fragment {
 
                 listview.setAdapter(mAdapter);
 
+
             }
         });
 
@@ -185,7 +143,7 @@ public class WordFragment extends Fragment {
 
     }
 
-
+/*
     @Override
     public void onResume(){
 
@@ -227,7 +185,7 @@ public class WordFragment extends Fragment {
                 VideoListDB.NewVideoItem.TITLE + " TEXT," +
                 VideoListDB.NewVideoItem.AUTHOR + " TEXT," +
                 VideoListDB.NewVideoItem.YEAR + " INTEGER);"; */
-
+/*
                 entry_ID = cursor.getInt(0);
                 word = cursor.getString(1);
                 definition = cursor.getString(2);
@@ -249,7 +207,7 @@ public class WordFragment extends Fragment {
         mAdapter.refresh(list);
 
     }
-
+*/
 
     }
 

@@ -1,9 +1,6 @@
 package com.example.android.dictionary.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,24 +9,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.android.dictionary.R;
-import com.example.android.dictionary.model.EntryDbHelper;
-import com.example.android.dictionary.model.EntryItem;
+import com.example.android.dictionary.model.ReloadListFromDB;
 import com.example.android.dictionary.model.Wordlist;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    // Data structures
-
-    private EntryItem mEntryItem;
-    private int mRowNumber;
     private Wordlist mWordlist = new Wordlist();
 
-    Context context;
-    EntryDbHelper entryDbHelper;
-    SQLiteDatabase sqLiteDatabase;
-    Cursor cursor;
+    private int mRowNumber;
 
+    ReloadListFromDB reloadedList = new ReloadListFromDB();
 
     private Button storeEntryButton, displayEntriesButton;
 
@@ -38,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mRowNumber = 0;
 
         storeEntryButton = (Button) findViewById(R.id.storeEntryButton);
         displayEntriesButton = (Button) findViewById(R.id.displayEntriesButton);
@@ -54,58 +46,14 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        // Reload the list from the SQLite Database. Since we are not searching for anything
+        // we will make searchItem just be blank.
 
-        // Initialize entry item
+        String searchItem = "";
 
-        mEntryItem = new EntryItem();
+        mWordlist = reloadedList.reloadListFromDB("sort", searchItem, getApplicationContext());
 
-        //Initialize EntryDbHelper and SQLiteDB
-
-        entryDbHelper = new EntryDbHelper(getApplicationContext());
-        sqLiteDatabase = entryDbHelper.getReadableDatabase();
-
-        cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
-
-        // Initialize the Row Number
-
-        mRowNumber = 0;
-
-        if(cursor.moveToFirst()){
-
-            do{
-
-                int entry_ID;
-                String word, definition;
-
-                // These corresponds to the columns in the videoDbHelper: video_ID (column 0),
-                // rank (col. 1), title (col. 2), author (col. 3), and year (col. 4)
-
-                // See below:
-
-                /*
-                private static final String CREATE_QUERY = "CREATE TABLE " + VideoListDB.NewVideoItem.TABLE_NAME +
-                "(" + VideoListDB.NewVideoItem.VIDEO_ID + " TEXT," +
-                VideoListDB.NewVideoItem.RANK + " INTEGER," +
-                VideoListDB.NewVideoItem.TITLE + " TEXT," +
-                VideoListDB.NewVideoItem.AUTHOR + " TEXT," +
-                VideoListDB.NewVideoItem.YEAR + " INTEGER);"; */
-
-                entry_ID = cursor.getInt(0);
-                word = cursor.getString(1);
-                definition = cursor.getString(2);
-
-
-                mEntryItem = new EntryItem(entry_ID, word, definition);
-
-                mWordlist.addEntryItem(mEntryItem, mRowNumber);
-
-                mRowNumber++;
-
-            }
-
-            while(cursor.moveToNext());
-
-        }
+        mRowNumber = reloadedList.getListSize();
 
 
 
@@ -120,9 +68,11 @@ public class MainActivity extends ActionBarActivity {
                 // to DisplayActivity.java
 
 
+
                 intent.putExtra(getString(R.string.ROW_NUMBER), mRowNumber);
 
                 intent.putExtra(getString(R.string.ENTRY_LIST), mWordlist.mEntryItem);
+
 
                 startActivity(intent);
 
