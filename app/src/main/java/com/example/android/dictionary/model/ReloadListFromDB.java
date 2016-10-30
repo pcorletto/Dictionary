@@ -44,6 +44,7 @@ public class ReloadListFromDB {
 
             cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
         }
+
         // Initialize the row number
 
         mRowNumber = 0;
@@ -73,6 +74,9 @@ public class ReloadListFromDB {
     }
 
     public int getListSize(){
+
+        // This method is used to count the number of items in the reloaded list
+
         // Initialize the row number
 
         mRowNumber = 0;
@@ -80,16 +84,6 @@ public class ReloadListFromDB {
         if(cursor.moveToFirst()){
 
             do{
-                int entry_ID;
-                String word, definition;
-
-                entry_ID = cursor.getInt(0);
-                word = cursor.getString(1);
-                definition = cursor.getString(2);
-
-                mEntryItem = new EntryItem(entry_ID, word, definition);
-
-                mWordlist.addEntryItem(mEntryItem, mRowNumber);
 
                 mRowNumber++;
 

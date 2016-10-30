@@ -143,71 +143,42 @@ public class WordFragment extends Fragment {
 
     }
 
-/*
+
     @Override
     public void onResume(){
+
+        // This method is needed so that, if we delete an item from the database,
+        // the list is refreshed from the adapter and reflects one less item
+        // Otherwise, the list will still display the old item.
 
         super.onResume();
         list.clear();
 
-        // Reload the items from the database
+        // Reload the list from the SQLite Database.
 
-        // Initialize entry item
+        // Reload the list from the SQLite Database. Since we are not searching for anything
+        // we will make searchItem just be blank.
 
-        EntryItem mEntryItem = new EntryItem();
+        String searchItem = "";
 
-        //Initialize EntryDbHelper and SQLiteDB
+        mWordlist = reloadedList.reloadListFromDB("sort", searchItem, getContext());
 
-        entryDbHelper = new EntryDbHelper(getContext());
-        sqLiteDatabase = entryDbHelper.getReadableDatabase();
+        int count = reloadedList.getListSize();
 
-        Cursor cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
+        for(int i=0; i<count; i++){
 
-        mRowNumber = 0;
-
-        if(cursor.moveToFirst()){
-
-            do{
-
-                int entry_ID;
-                String word, definition;
-
-                // These corresponds to the columns in the videoDbHelper: expense_ID (column 0),
-                // date (col. 1), expense_amount (col. 2), category (col. 3), store (col. 4),
-                // and description (col. 5)
-
-                // See sample below:
-
-                /*
-                private static final String CREATE_QUERY = "CREATE TABLE " + VideoListDB.NewVideoItem.TABLE_NAME +
-                "(" + VideoListDB.NewVideoItem.VIDEO_ID + " TEXT," +
-                VideoListDB.NewVideoItem.RANK + " INTEGER," +
-                VideoListDB.NewVideoItem.TITLE + " TEXT," +
-                VideoListDB.NewVideoItem.AUTHOR + " TEXT," +
-                VideoListDB.NewVideoItem.YEAR + " INTEGER);"; */
-/*
-                entry_ID = cursor.getInt(0);
-                word = cursor.getString(1);
-                definition = cursor.getString(2);
-
-                mEntryItem = new EntryItem(entry_ID, word, definition);
-
-                list.add(mEntryItem);
-
-                mRowNumber++;
-
-            }
-
-            while(cursor.moveToNext());
+            list.add(mWordlist.getEntryItem(i));
 
         }
+
+        mAdapter = new EntryItemAdapter(getContext(), list);
 
         // Done reloading items from the database
 
         mAdapter.refresh(list);
 
-    }
-*/
+        }
+
 
     }
 

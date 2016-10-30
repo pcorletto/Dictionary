@@ -29,8 +29,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRowNumber = 0;
-
         storeEntryButton = (Button) findViewById(R.id.storeEntryButton);
         displayEntriesButton = (Button) findViewById(R.id.displayEntriesButton);
 
