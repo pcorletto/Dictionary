@@ -83,7 +83,8 @@ public class EntryDbHelper extends SQLiteOpenHelper {
           //      " WHERE " + EntryListDB.NewEntryItem.WORD + " LIKE? " + searchItem, null);
 
         cursor = db.rawQuery("SELECT * FROM " +
-                EntryListDB.NewEntryItem.TABLE_NAME + " where " +EntryListDB.NewEntryItem.WORD+ " like '"+searchItem+"%'" , null);
+                EntryListDB.NewEntryItem.TABLE_NAME + " where " +EntryListDB.NewEntryItem.WORD+ " like '"
+                +searchItem+"%'" + " ORDER BY " + EntryListDB.NewEntryItem.WORD + " COLLATE NOCASE ASC", null);
 
         return cursor;
     }

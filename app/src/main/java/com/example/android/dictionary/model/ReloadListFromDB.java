@@ -40,6 +40,11 @@ public class ReloadListFromDB {
 
         }
 
+        else if (selector.equals("get")){
+
+            cursor = entryDbHelper.getEntryItem(sqLiteDatabase);
+        }
+
         else if (selector.equals("sort")){
 
             cursor = entryDbHelper.sortEntryItems(sqLiteDatabase);
