@@ -36,7 +36,7 @@ public class ReloadListFromDB {
 
         if (selector.equals("search")) {
 
-                cursor = entryDbHelper.searchEntryItems(searchItem, sqLiteDatabase);
+            cursor = entryDbHelper.searchEntryItems(searchItem, sqLiteDatabase);
 
         }
 
@@ -75,7 +75,7 @@ public class ReloadListFromDB {
             while(cursor.moveToNext());
         }
 
-       return mWordlist;
+        return mWordlist;
     }
 
     public int getListSize(){
